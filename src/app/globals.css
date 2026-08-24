@@ -1,0 +1,244 @@
+@import 'tailwindcss';
+
+/* Tema escuro controlado por classe (next-themes), não só por preferência do SO. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =============================================================================
+   Sistema de design — "Nossa Viagem"
+   Paleta neutra e quente, um único acento. Muito espaço em branco, cards
+   discretos, tipografia com hierarquia clara.
+   ========================================================================== */
+@theme {
+  /* Superfícies */
+  --color-canvas: #fbfaf9;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f2f0;
+  --color-overlay: rgba(16, 16, 18, 0.45);
+
+  /* Texto */
+  --color-ink: #16161a;
+  --color-ink-soft: #5c5b60;
+  --color-ink-faint: #8b8a90;
+
+  /* Traços */
+  --color-line: #e7e4e1;
+  --color-line-strong: #d6d2ce;
+
+  /* Ações */
+  --color-primary: #16161a;
+  --color-primary-hover: #2a2a30;
+  --color-primary-foreground: #ffffff;
+
+  /* Acento: verde-oceano, presente mas sóbrio */
+  --color-accent: #0f766e;
+  --color-accent-soft: #e6f2f0;
+  --color-accent-strong: #0b5d56;
+
+  /* Estados */
+  --color-positive: #157f3d;
+  --color-positive-soft: #e7f4ec;
+  --color-warning: #a2620a;
+  --color-warning-soft: #fdf3e3;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdeceb;
+  --color-info: #1d4ed8;
+  --color-info-soft: #eaf0fe;
+
+  /* Categorias do roteiro e do mapa */
+  --color-cat-flight: #2563eb;
+  --color-cat-accommodation: #7c3aed;
+  --color-cat-car: #ea580c;
+  --color-cat-restaurant: #c2410c;
+  --color-cat-attraction: #0f766e;
+  --color-cat-tour: #0891b2;
+  --color-cat-shopping: #be185d;
+  --color-cat-event: #4f46e5;
+  --color-cat-payment: #b45309;
+  --color-cat-other: #64748b;
+
+  /* Tipografia */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Raios e sombras — discretos, nada de "dashboard genérico" */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --shadow-card: 0 1px 2px rgba(16, 16, 18, 0.04), 0 1px 3px rgba(16, 16, 18, 0.03);
+  --shadow-raised: 0 4px 16px -4px rgba(16, 16, 18, 0.1), 0 2px 6px -2px rgba(16, 16, 18, 0.05);
+  --shadow-float: 0 16px 48px -12px rgba(16, 16, 18, 0.22);
+}
+
+.dark {
+  --color-canvas: #0c0c0e;
+  --color-surface: #141417;
+  --color-surface-muted: #1c1c20;
+  --color-overlay: rgba(0, 0, 0, 0.65);
+
+  --color-ink: #f4f3f2;
+  --color-ink-soft: #a3a2a8;
+  --color-ink-faint: #78777e;
+
+  --color-line: #26262b;
+  --color-line-strong: #34343a;
+
+  --color-primary: #f4f3f2;
+  --color-primary-hover: #e2e0de;
+  --color-primary-foreground: #16161a;
+
+  --color-accent: #2dd4bf;
+  --color-accent-soft: #0e2b28;
+  --color-accent-strong: #5eead4;
+
+  --color-positive: #4ade80;
+  --color-positive-soft: #10261a;
+  --color-warning: #fbbf24;
+  --color-warning-soft: #2a2010;
+  --color-danger: #f87171;
+  --color-danger-soft: #2c1414;
+  --color-info: #60a5fa;
+  --color-info-soft: #111c33;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-raised: 0 4px 16px -4px rgba(0, 0, 0, 0.6);
+  --shadow-float: 0 16px 48px -12px rgba(0, 0, 0, 0.7);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Área segura do iPhone com a navegação inferior */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Foco sempre visível — requisito de acessibilidade. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+  }
+
+  /* Campos de formulário não podem dar zoom no iOS: mínimo de 16px. */
+  input, select, textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  @media (min-width: 640px) {
+    input, select, textarea {
+      font-size: 0.9375rem;
+    }
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem); }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Numerais alinhados em tabelas de valores e horários. */
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .surface-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+/* Animações discretas */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.animate-fade-in { animation: fade-in 0.18s ease-out; }
+.animate-slide-up { animation: slide-up 0.22s cubic-bezier(0.32, 0.72, 0, 1); }
+.animate-slide-in-right { animation: slide-in-right 0.26s cubic-bezier(0.32, 0.72, 0, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =============================================================================
+   Impressão / PDF — layout A4
+   ========================================================================== */
+@page {
+  size: A4;
+  margin: 16mm 14mm 18mm;
+}
+
+@media print {
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5pt;
+  }
+
+  .print-hidden, nav, header[data-app-header], [data-bottom-nav] {
+    display: none !important;
+  }
+
+  .print-page-break { break-before: page; }
+  .print-avoid-break { break-inside: avoid; }
+
+  a { text-decoration: none; color: #000; }
+
+  .surface-card {
+    box-shadow: none !important;
+    border: 1px solid #d4d4d4 !important;
+  }
+}
