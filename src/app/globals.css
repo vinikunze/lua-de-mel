@@ -233,6 +233,14 @@
   }
 
   .print-page-break { break-before: page; }
+
+  /* O documento da viagem ocupa a folha inteira, sem as margens do aplicativo. */
+  .pdf-root,
+  .pdf-screen {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
   .print-avoid-break { break-inside: avoid; }
 
   a { text-decoration: none; color: #000; }

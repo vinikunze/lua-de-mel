@@ -43,11 +43,9 @@ export function usePlaceAutocomplete(options: { bias?: { lat: number; lng: numbe
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (query.trim().length < 3) {
-      setSuggestions([]);
-      setLoading(false);
-      return;
-    }
+    // Abaixo de 3 caracteres não consultamos nada; a lista some por derivação
+    // (ver `visibleSuggestions`), sem precisar mexer no estado aqui.
+    if (query.trim().length < 3) return;
 
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(async () => {
@@ -111,5 +109,17 @@ export function usePlaceAutocomplete(options: { bias?: { lat: number; lng: numbe
     setError(null);
   }, []);
 
-  return { query, setQuery, suggestions, loading, error, unavailable, resolve, reset };
+  // A lista só existe a partir de 3 caracteres — derivado, não sincronizado.
+  const active = query.trim().length >= 3;
+
+  return {
+    query,
+    setQuery,
+    suggestions: active ? suggestions : [],
+    loading: active && loading,
+    error,
+    unavailable,
+    resolve,
+    reset,
+  };
 }

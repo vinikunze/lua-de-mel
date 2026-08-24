@@ -1,6 +1,18 @@
 import { z } from 'zod';
 import { optionalText, optionalUuid, requiredText } from './common';
 
+/**
+ * E-mail tolerante a espaços e maiúsculas.
+ * A ordem importa: normalizamos primeiro e validamos depois, senão um endereço
+ * colado com espaço no fim seria recusado sem motivo.
+ */
+const email = () =>
+  z
+    .string({ message: 'Informe um e-mail válido.' })
+    .trim()
+    .toLowerCase()
+    .pipe(z.email({ message: 'Informe um e-mail válido.' }));
+
 // --- Documentos --------------------------------------------------------------
 export const DOCUMENT_CATEGORIES = [
   'ticket', 'boarding_pass', 'accommodation', 'airbnb', 'car_rental',
@@ -115,7 +127,7 @@ export const quickLinkSchema = z.object({
 
 // --- Participantes -----------------------------------------------------------
 export const inviteSchema = z.object({
-  email: z.email({ message: 'Informe um e-mail válido.' }).trim().toLowerCase(),
+  email: email(),
   role: z.enum(['editor', 'viewer']).default('viewer'),
   displayName: optionalText(120),
 });
@@ -129,7 +141,7 @@ export const memberRoleSchema = z.object({
 export const signUpSchema = z
   .object({
     fullName: requiredText('seu nome', 120),
-    email: z.email({ message: 'Informe um e-mail válido.' }).trim().toLowerCase(),
+    email: email(),
     password: z.string().min(8, 'A senha precisa ter ao menos 8 caracteres.').max(72),
     confirmPassword: z.string(),
   })
@@ -139,12 +151,12 @@ export const signUpSchema = z
   });
 
 export const signInSchema = z.object({
-  email: z.email({ message: 'Informe um e-mail válido.' }).trim().toLowerCase(),
+  email: email(),
   password: z.string().min(1, 'Informe sua senha.'),
 });
 
 export const forgotPasswordSchema = z.object({
-  email: z.email({ message: 'Informe um e-mail válido.' }).trim().toLowerCase(),
+  email: email(),
 });
 
 export const resetPasswordSchema = z

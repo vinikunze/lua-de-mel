@@ -53,11 +53,6 @@ export function TripForm({ action, trip, destinationsHint, submitLabel }: TripFo
     }
   }, [state, router]);
 
-  // Ao escolher a ida, sugere a volta no mesmo dia se ainda estiver vazia.
-  useEffect(() => {
-    if (startDate && !endDate) setEndDate(startDate);
-  }, [startDate, endDate]);
-
   return (
     <form action={formAction} className="space-y-8" noValidate>
       <FormError state={state} />
@@ -107,7 +102,12 @@ export function TripForm({ action, trip, destinationsHint, submitLabel }: TripFo
             name="startDate"
             type="date"
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+              setStartDate(value);
+              // Sugere a volta no mesmo dia quando ela ainda está em branco.
+              if (value && !endDate) setEndDate(value);
+            }}
             required
           />
         </Field>

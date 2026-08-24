@@ -14,7 +14,7 @@ export function TripHeader({ trip, members }: { trip: TripRow; members: TripMemb
   const days = tripDayCount(trip.start_date, trip.end_date);
 
   return (
-    <div className="border-b border-line bg-surface">
+    <div className="border-b border-line bg-surface print-hidden">
       <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6">
         <Link
           href="/viagens"

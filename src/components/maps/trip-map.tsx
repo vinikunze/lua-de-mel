@@ -10,7 +10,6 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
 import { OpenRouteLink } from '@/components/trip/open-route-link';
 import { useTrip } from '@/components/trip/trip-context';
-import { markerLabelFor } from '@/lib/google/static-map';
 import { formatDuration, formatShortWeekday, formatTime } from '@/lib/format/date';
 import { formatDistance, travelModeLabel } from '@/lib/format/distance';
 import { PLACE_CATEGORY_LABEL } from '@/lib/validators/place';

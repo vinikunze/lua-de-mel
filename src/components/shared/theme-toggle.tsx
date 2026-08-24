@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -11,12 +11,19 @@ const OPTIONS = [
   { value: 'system', label: 'Sistema', icon: Monitor },
 ] as const;
 
+/** Nunca muda: o valor já vem certo do servidor (false) e do cliente (true). */
+const subscribeToNothing = () => () => {};
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
-  // Evita divergência entre servidor e cliente na primeira renderização.
-  useEffect(() => setMounted(true), []);
+  // O tema só é conhecido no navegador. Marcamos a montagem sem efeito, o que
+  // evita divergência entre servidor e cliente na primeira renderização.
+  const mounted = useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
 
   return (
     <div role="radiogroup" aria-label="Tema da interface" className="flex gap-2">

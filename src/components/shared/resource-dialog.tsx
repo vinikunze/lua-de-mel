@@ -28,17 +28,17 @@ export function ResourceDialog({
   autoOpenParam?: string;
   trigger?: ReactNode;
 }) {
-  const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const shouldAutoOpen = Boolean(autoOpenParam) && searchParams.get(autoOpenParam ?? '') === '1';
+
+  // O estado inicial já nasce aberto quando veio `?novo=1`, sem efeito extra.
+  const [open, setOpen] = useState(shouldAutoOpen);
 
   useEffect(() => {
-    if (autoOpenParam && searchParams.get(autoOpenParam) === '1') {
-      setOpen(true);
-      // Limpa o parâmetro para não reabrir ao navegar de volta.
-      router.replace(window.location.pathname, { scroll: false });
-    }
-  }, [autoOpenParam, searchParams, router]);
+    // Limpa o parâmetro da URL para o diálogo não reabrir ao voltar.
+    if (shouldAutoOpen) router.replace(window.location.pathname, { scroll: false });
+  }, [shouldAutoOpen, router]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

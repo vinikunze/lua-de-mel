@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { LogOut, Moon, Plus, Settings, Sun, User as UserIcon } from 'lucide-react';
+import { Moon, Plus, Settings, Sun, User as UserIcon } from 'lucide-react';
 import { Logo } from '@/components/shared/logo';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Dropdown, DropdownContent, DropdownItem, DropdownLabel, DropdownSeparator, DropdownTrigger,
 } from '@/components/ui/dropdown';
-import { signOutAction } from '@/server/actions/auth';
+import { SignOutItem } from '@/components/shared/sign-out-item';
 import { cn } from '@/lib/utils';
 
 interface AppHeaderProps {
@@ -105,12 +105,7 @@ export function AppHeader({ userName, userEmail, avatarUrl }: AppHeaderProps) {
               </DropdownItem>
               <DropdownSeparator />
               <DropdownItem asChild destructive>
-                <form action={signOutAction}>
-                  <button type="submit" className="flex w-full items-center gap-2.5">
-                    <LogOut className="h-4 w-4" aria-hidden />
-                    Sair
-                  </button>
-                </form>
+                <SignOutItem />
               </DropdownItem>
             </DropdownContent>
           </Dropdown>

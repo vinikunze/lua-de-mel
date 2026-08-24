@@ -57,12 +57,13 @@ export function PlaceAutocomplete({
   });
   const [open, setOpen] = useState(false);
   const [resolving, setResolving] = useState(false);
-  const [manual, setManual] = useState(!available);
+  /** null = segue o ambiente; true/false = escolha explícita do usuário. */
+  const [manualChoice, setManualChoice] = useState<boolean | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (unavailable) setManual(true);
-  }, [unavailable]);
+  // Sem a API disponível, o campo já nasce manual — sem efeito de sincronização.
+  const manual = manualChoice ?? (!available || unavailable);
+  const setManual = setManualChoice;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

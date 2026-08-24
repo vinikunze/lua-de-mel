@@ -73,18 +73,19 @@ export function MapView({ apiKey, mapId, markers, polyline, className, onSelect 
   const mapRef = useRef<google.maps.Map | null>(null);
   const overlaysRef = useRef<Array<{ setMap: (map: google.maps.Map | null) => void }>>([]);
   const infoRef = useRef<google.maps.InfoWindow | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [loadError, setLoadError] = useState('');
+
+  // Sem chave não há o que carregar: isso é sabido já na renderização.
+  const status = apiKey ? loadState : 'error';
+  const message = apiKey
+    ? loadError
+    : 'Mapa interativo indisponível: a chave do Google Maps não está configurada.';
 
   // 1) Carrega a biblioteca e cria o mapa uma única vez.
   useEffect(() => {
     let cancelled = false;
-
-    if (!apiKey) {
-      setStatus('error');
-      setMessage('Mapa interativo indisponível: a chave do Google Maps não está configurada.');
-      return;
-    }
+    if (!apiKey) return;
 
     loadGoogleMaps(apiKey)
       .then((maps) => {
@@ -100,12 +101,12 @@ export function MapView({ apiKey, mapId, markers, polyline, className, onSelect 
           gestureHandling: 'greedy',
         });
         infoRef.current = new maps.InfoWindow();
-        setStatus('ready');
+        setLoadState('ready');
       })
       .catch((error: Error) => {
         if (cancelled) return;
-        setStatus('error');
-        setMessage(error.message || 'Não foi possível carregar o mapa.');
+        setLoadState('error');
+        setLoadError(error.message || 'Não foi possível carregar o mapa.');
       });
 
     return () => {

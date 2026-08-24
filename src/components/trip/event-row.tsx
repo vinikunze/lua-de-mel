@@ -45,7 +45,7 @@ export function eventColor(category: string): string {
 }
 
 export function EventIcon({ category, className }: { category: string; className?: string }) {
-  const Icon = eventIcon(category);
+  const Icon = CATEGORY_ICON[category] ?? MapPin;
   return (
     <span
       className={cn(

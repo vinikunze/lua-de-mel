@@ -6,12 +6,8 @@ import { loadTripAccess, requireOwnerAccess } from '@/server/trip-access';
 import { failure, success, zodFailure, type ActionResult } from '@/server/action-result';
 import { logAndFriendly } from '@/lib/errors';
 import { inviteSchema } from '@/lib/validators/misc';
-import { appUrl } from '@/lib/env';
+import { inviteUrl } from '@/server/invites';
 import type { MemberRole } from '@/types/database';
-
-export function inviteUrl(token: string): string {
-  return `${appUrl()}/convite/${token}`;
-}
 
 /**
  * Convida alguém para a viagem.
