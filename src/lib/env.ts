@@ -52,10 +52,27 @@ export function serverMapsKey(): string | null {
 }
 
 // --- Aplicação ---------------------------------------------------------------
+
+/**
+ * Normaliza uma URL de origem vinda de variável de ambiente.
+ *
+ * Painéis de hospedagem costumam mostrar o domínio sem o protocolo, e é fácil
+ * copiar "meu-app.vercel.app" em vez de "https://meu-app.vercel.app". Sem o
+ * protocolo, os links de confirmação de e-mail e de convite sairiam quebrados —
+ * então completamos aqui em vez de confiar em quem preencheu.
+ */
+function normalizeOrigin(value: string): string {
+  const trimmed = value.trim().replace(/\/+$/, '');
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  // localhost e IPs locais não têm certificado; o resto assume-se HTTPS.
+  const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i.test(trimmed);
+  return `${isLocal ? 'http' : 'https'}://${trimmed}`;
+}
+
 export function appUrl(): string {
   const explicit = read('NEXT_PUBLIC_APP_URL');
-  if (explicit) return explicit.replace(/\/$/, '');
+  if (explicit) return normalizeOrigin(explicit);
   const vercel = read('NEXT_PUBLIC_VERCEL_URL', 'VERCEL_URL');
-  if (vercel) return `https://${vercel.replace(/^https?:\/\//, '').replace(/\/$/, '')}`;
+  if (vercel) return normalizeOrigin(vercel);
   return 'http://localhost:3000';
 }
