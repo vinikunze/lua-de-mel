@@ -37,7 +37,7 @@ export default async function MapPage({ params }: { params: Promise<{ tripId: st
 
       {!caps.interactiveMap && (
         <Alert tone="info" title="Mapa interativo desativado">
-          Configure <code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> para ver o mapa aqui dentro. Enquanto isso,
+          Configure <code>GOOGLE_MAPS_BROWSER_API_KEY</code> para ver o mapa aqui dentro. Enquanto isso,
           todos os locais continuam listados e cada um abre direto no Google Maps.{' '}
           <Link href="/configurar" className="font-semibold underline">
             Como configurar

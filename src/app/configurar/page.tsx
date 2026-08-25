@@ -83,11 +83,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=`}
               Habilite a <strong>Maps JavaScript API</strong> no Google Cloud e crie uma chave restrita por
               referrer HTTP (seu domínio e <code>localhost</code>):
               <pre className="mt-2 overflow-x-auto rounded-[10px] bg-surface-muted p-3 text-[12px]">
-{`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=`}
+{`GOOGLE_MAPS_BROWSER_API_KEY=`}
               </pre>
             </Status>
             <p className="text-[12px] text-ink-faint">
-              Esta chave fica visível no navegador — por isso a restrição por domínio é essencial.
+              Esta chave acaba visível na página do mapa — por isso a restrição por domínio é
+              essencial.
             </p>
           </CardContent>
         </Card>

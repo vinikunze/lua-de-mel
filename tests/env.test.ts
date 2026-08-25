@@ -15,7 +15,7 @@ async function appUrlWith(env: Record<string, string | undefined>): Promise<stri
   return appUrl();
 }
 
-const KEYS = ['NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_VERCEL_URL', 'VERCEL_URL'];
+const KEYS = ['APP_URL', 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_VERCEL_URL', 'VERCEL_URL'];
 
 afterEach(() => {
   for (const key of KEYS) delete process.env[key];
@@ -23,36 +23,55 @@ afterEach(() => {
 });
 
 describe('URL pública da aplicação', () => {
-  const limpo = { NEXT_PUBLIC_APP_URL: undefined, NEXT_PUBLIC_VERCEL_URL: undefined, VERCEL_URL: undefined };
+  const limpo: Record<string, undefined> = {
+    APP_URL: undefined,
+    NEXT_PUBLIC_APP_URL: undefined,
+    NEXT_PUBLIC_VERCEL_URL: undefined,
+    VERCEL_URL: undefined,
+  };
 
   it('completa o protocolo quando o domínio vem sem ele', async () => {
-    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: 'lua-de-mel-chi.vercel.app' })).toBe(
+    expect(await appUrlWith({ ...limpo, APP_URL: 'lua-de-mel-chi.vercel.app' })).toBe(
       'https://lua-de-mel-chi.vercel.app',
     );
   });
 
   it('mantém o protocolo quando já foi informado', async () => {
-    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: 'https://minha-viagem.com.br' })).toBe(
+    expect(await appUrlWith({ ...limpo, APP_URL: 'https://minha-viagem.com.br' })).toBe(
       'https://minha-viagem.com.br',
     );
   });
 
   it('remove a barra final', async () => {
-    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: 'https://minha-viagem.com.br/' })).toBe(
+    expect(await appUrlWith({ ...limpo, APP_URL: 'https://minha-viagem.com.br/' })).toBe(
       'https://minha-viagem.com.br',
     );
   });
 
   it('ignora espaços em volta', async () => {
-    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: '  exemplo.vercel.app  ' })).toBe(
+    expect(await appUrlWith({ ...limpo, APP_URL: '  exemplo.vercel.app  ' })).toBe(
       'https://exemplo.vercel.app',
     );
   });
 
   it('usa http em localhost, que não tem certificado', async () => {
-    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: 'localhost:3000' })).toBe(
-      'http://localhost:3000',
+    expect(await appUrlWith({ ...limpo, APP_URL: 'localhost:3000' })).toBe('http://localhost:3000');
+  });
+
+  it('ainda aceita o nome antigo NEXT_PUBLIC_APP_URL', async () => {
+    expect(await appUrlWith({ ...limpo, NEXT_PUBLIC_APP_URL: 'https://antigo.com.br' })).toBe(
+      'https://antigo.com.br',
     );
+  });
+
+  it('prefere APP_URL quando os dois nomes estão definidos', async () => {
+    expect(
+      await appUrlWith({
+        ...limpo,
+        APP_URL: 'https://novo.com.br',
+        NEXT_PUBLIC_APP_URL: 'https://antigo.com.br',
+      }),
+    ).toBe('https://novo.com.br');
   });
 
   it('cai para a URL do deploy da Vercel quando não há valor explícito', async () => {

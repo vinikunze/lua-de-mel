@@ -192,10 +192,10 @@ Copie `.env.example` para `.env.local`. O arquivo `.env.local` está no
 
 | Variável | Para quê |
 | --- | --- |
-| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Mapa interativo no navegador |
+| `GOOGLE_MAPS_BROWSER_API_KEY` | Mapa interativo no navegador |
 | `GOOGLE_MAPS_SERVER_API_KEY` | Busca de endereços, rotas e mapas do PDF |
-| `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` | Estilo personalizado do mapa |
-| `NEXT_PUBLIC_APP_URL` | URL pública, usada nos links de convite |
+| `GOOGLE_MAPS_MAP_ID` | Estilo personalizado do mapa |
+| `APP_URL` | URL pública, usada nos links de convite (com `https://`) |
 
 Sem as chaves do Google o sistema **continua funcionando**: o endereço passa a ser
 digitado à mão, os recursos de cálculo automático ficam ocultos e a página
@@ -217,9 +217,10 @@ ative o faturamento e habilite:
 
 ### Use duas chaves separadas
 
-**Chave 1 — navegador** (`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`)
+**Chave 1 — navegador** (`GOOGLE_MAPS_BROWSER_API_KEY`)
 
-Fica visível no HTML, então a restrição é indispensável:
+Ela é lida no servidor e repassada só para a página do mapa, mas acaba visível
+ali (vai na URL do script). A restrição é indispensável:
 
 - *Application restrictions* → **Websites (HTTP referrers)**
   - `https://seu-dominio.com/*`
@@ -228,7 +229,7 @@ Fica visível no HTML, então a restrição é indispensável:
 
 **Chave 2 — servidor** (`GOOGLE_MAPS_SERVER_API_KEY`)
 
-Sem o prefixo `NEXT_PUBLIC_`, então nunca chega ao navegador:
+Usada só dentro das nossas rotas, nunca chega ao navegador:
 
 - *Application restrictions* → **None** (ou por IP, se o seu deploy tiver IP fixo)
 - *API restrictions* → **Places API (New)**, **Routes API** e **Maps Static API**
@@ -344,11 +345,23 @@ projeto Supabase real.
 1. Suba o repositório para o GitHub.
 2. Em <https://vercel.com>, importe o projeto (o Next.js é detectado sozinho).
 3. Em *Settings → Environment Variables*, cadastre:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` (opcional)
-   - `GOOGLE_MAPS_SERVER_API_KEY` (opcional)
-   - `NEXT_PUBLIC_APP_URL` com o domínio final
+
+   | Variável | Tipo na Vercel | Observação |
+   | --- | --- | --- |
+   | `NEXT_PUBLIC_SUPABASE_URL` | Config | o navegador precisa ler |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Config | pública por design; quem protege é o RLS |
+   | `APP_URL` | Config | domínio final **com `https://`** |
+   | `GOOGLE_MAPS_BROWSER_API_KEY` | Secret | opcional |
+   | `GOOGLE_MAPS_SERVER_API_KEY` | Secret | opcional |
+   | `GOOGLE_MAPS_MAP_ID` | Config | opcional |
+
+   Sobre a coluna *Tipo*: a Vercel recusa marcar como **Secret** qualquer
+   variável com prefixo `NEXT_PUBLIC_`, e com razão — o valor vai embutido no
+   JavaScript enviado ao navegador, então não há segredo a guardar. As duas
+   variáveis do Supabase acima são as únicas que precisam desse prefixo, e
+   ambas são públicas de propósito. As demais ficam sem prefixo justamente para
+   poderem ser **Secret**.
+
 4. Faça o deploy.
 5. Volte ao Supabase e adicione o domínio em *Authentication → URL Configuration*.
 6. Volte ao Google Cloud e adicione o domínio nas restrições de referrer da chave
