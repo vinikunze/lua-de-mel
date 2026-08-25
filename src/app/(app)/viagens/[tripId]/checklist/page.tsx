@@ -19,7 +19,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ trip
     .eq('trip_id', tripId)
     .order('position');
 
-  const checklists = ((data ?? []) as unknown as ChecklistWithItems[]).map((list) => ({
+  const checklists = ((data ?? []) as ChecklistWithItems[]).map((list) => ({
     ...list,
     items: [...(list.items ?? [])].sort((a, b) => a.position - b.position),
   }));

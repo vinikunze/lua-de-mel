@@ -24,7 +24,7 @@ export default async function FlightsPage({ params }: { params: Promise<{ tripId
     .eq('trip_id', tripId)
     .order('departure_at');
 
-  const flights = (data ?? []) as unknown as FlightWithPassengers[];
+  const flights = (data ?? []) as FlightWithPassengers[];
   const total = flights.reduce((acc, f) => acc + (Number(f.total_price) || 0), 0);
   const groups = groupBy(flights, (f) => f.group_label ?? 'Trechos');
 

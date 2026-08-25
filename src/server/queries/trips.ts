@@ -50,13 +50,17 @@ export interface TripMemberWithProfile extends TripMemberRow {
 
 export async function listTripMembers(tripId: string): Promise<TripMemberWithProfile[]> {
   const supabase = await createClient();
+  // `trip_members` referencia `profiles` duas vezes — por `user_id` e por
+  // `invited_by`. Sem dizer qual chave usar, o PostgREST não escolhe: responde
+  // 300 (PGRST201) e a viagem inteira deixava de abrir, porque esta consulta
+  // roda no layout. O nome da constraint resolve a ambiguidade.
   const { data, error } = await supabase
     .from('trip_members')
-    .select('*, profile:profiles(full_name, email, avatar_url)')
+    .select('*, profile:profiles!trip_members_user_id_fkey(full_name, email, avatar_url)')
     .eq('trip_id', tripId)
     .order('created_at', { ascending: true });
   if (error) throw error;
-  return (data ?? []) as unknown as TripMemberWithProfile[];
+  return (data ?? []) as TripMemberWithProfile[];
 }
 
 export type FlightWithPassengers = FlightRow & { passengers: FlightPassengerRow[] };

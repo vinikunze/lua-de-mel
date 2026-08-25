@@ -28,7 +28,7 @@ export default async function FinancePage({ params }: { params: Promise<{ tripId
       />
       <FinanceBoard
         tripId={tripId}
-        expenses={(data ?? []) as unknown as ExpenseWithSplits[]}
+        expenses={(data ?? []) as ExpenseWithSplits[]}
         canEdit={canEdit}
       />
     </div>

@@ -485,6 +485,12 @@ export interface Database {
         [
           FK<'trip_members_trip_id_fkey', 'trip_id', 'trips'>,
           FK<'trip_members_user_id_fkey', 'user_id', 'profiles'>,
+          // Declarada de propósito, embora nada faça embed por ela: são DUAS
+          // chaves de trip_members para profiles, e omitir esta fazia o
+          // TypeScript acreditar que `profiles(...)` era inequívoco. O PostgREST
+          // via as duas e respondia 300/PGRST201. Com ambas aqui, um embed sem
+          // dizer qual chave usar passa a falhar no `npm run typecheck`.
+          FK<'trip_members_invited_by_fkey', 'invited_by', 'profiles'>,
         ]
       >;
       destinations: Def<DestinationRow, Meta | 'state' | 'country' | 'place_id' | 'latitude' | 'longitude' | 'start_date' | 'end_date' | 'position'>;

@@ -33,7 +33,7 @@ export default async function RoutesPage({ params }: { params: Promise<{ tripId:
       <RoutePlanner
         tripId={tripId}
         places={places ?? []}
-        routes={(routes ?? []) as unknown as RouteWithWaypoints[]}
+        routes={(routes ?? []) as RouteWithWaypoints[]}
         days={eachDayInRange(trip.start_date, trip.end_date)}
         canEdit={canEdit}
       />
