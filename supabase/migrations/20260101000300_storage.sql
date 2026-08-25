@@ -26,8 +26,12 @@ on conflict (id) do update
       file_size_limit = excluded.file_size_limit,
       allowed_mime_types = excluded.allowed_mime_types;
 
--- Primeiro segmento do caminho = trip_id
-create or replace function storage.trip_id_from_path(p_name text)
+-- Primeiro segmento do caminho = trip_id.
+--
+-- A função vive em `public` e não em `storage`: projetos Supabase recentes não
+-- permitem criar objetos no schema `storage` (ele pertence ao
+-- supabase_storage_admin). As políticas abaixo a referenciam normalmente.
+create or replace function public.trip_id_from_path(p_name text)
 returns uuid
 language plpgsql
 immutable
@@ -39,6 +43,8 @@ exception when others then
 end;
 $$;
 
+grant execute on function public.trip_id_from_path(text) to authenticated, anon;
+
 -- -----------------------------------------------------------------------------
 -- trip-documents
 -- -----------------------------------------------------------------------------
@@ -47,7 +53,7 @@ create policy "trip_documents_select" on storage.objects
   for select to authenticated
   using (
     bucket_id = 'trip-documents'
-    and public.is_trip_member(storage.trip_id_from_path(name))
+    and public.is_trip_member(public.trip_id_from_path(name))
   );
 
 drop policy if exists "trip_documents_insert" on storage.objects;
@@ -55,7 +61,7 @@ create policy "trip_documents_insert" on storage.objects
   for insert to authenticated
   with check (
     bucket_id = 'trip-documents'
-    and public.can_edit_trip(storage.trip_id_from_path(name))
+    and public.can_edit_trip(public.trip_id_from_path(name))
   );
 
 drop policy if exists "trip_documents_update" on storage.objects;
@@ -63,7 +69,7 @@ create policy "trip_documents_update" on storage.objects
   for update to authenticated
   using (
     bucket_id = 'trip-documents'
-    and public.can_edit_trip(storage.trip_id_from_path(name))
+    and public.can_edit_trip(public.trip_id_from_path(name))
   );
 
 drop policy if exists "trip_documents_delete" on storage.objects;
@@ -71,7 +77,7 @@ create policy "trip_documents_delete" on storage.objects
   for delete to authenticated
   using (
     bucket_id = 'trip-documents'
-    and public.can_edit_trip(storage.trip_id_from_path(name))
+    and public.can_edit_trip(public.trip_id_from_path(name))
   );
 
 -- -----------------------------------------------------------------------------
@@ -87,7 +93,7 @@ create policy "trip_covers_insert" on storage.objects
   for insert to authenticated
   with check (
     bucket_id = 'trip-covers'
-    and public.can_edit_trip(storage.trip_id_from_path(name))
+    and public.can_edit_trip(public.trip_id_from_path(name))
   );
 
 drop policy if exists "trip_covers_delete" on storage.objects;
@@ -95,5 +101,5 @@ create policy "trip_covers_delete" on storage.objects
   for delete to authenticated
   using (
     bucket_id = 'trip-covers'
-    and public.can_edit_trip(storage.trip_id_from_path(name))
+    and public.can_edit_trip(public.trip_id_from_path(name))
   );

@@ -116,6 +116,13 @@ do nome do arquivo**:
 | `20260101000100_rls_policies.sql` | Row Level Security em todas as tabelas |
 | `20260101000200_functions.sql` | Convites, transferência de propriedade, resumo financeiro |
 | `20260101000300_storage.sql` | Buckets e políticas de acesso aos arquivos |
+| `20260101000400_hardening.sql` | Fecha o acesso anônimo às funções e fixa o `search_path` |
+
+> Duas particularidades do Supabase que as migrations já contornam: a função
+> auxiliar do Storage fica em `public` (o schema `storage` pertence ao
+> `supabase_storage_admin` e não aceita objetos novos), e o último arquivo revoga
+> o `EXECUTE` que o Postgres e o próprio Supabase concedem por padrão — sem ele,
+> funções internas ficariam chamáveis por `/rest/v1/rpc/...` sem login.
 
 **Opção A — SQL Editor (mais simples):** abra o SQL Editor do projeto, cole o
 conteúdo de cada arquivo na ordem e execute um de cada vez.
