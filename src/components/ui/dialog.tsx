@@ -78,6 +78,19 @@ export function DialogDescription({
   );
 }
 
+/**
+ * Formulário dentro de um diálogo.
+ *
+ * O DialogContent é uma coluna flex de altura limitada, e o DialogBody rola
+ * com `flex-1 overflow-y-auto`. Um <form> comum entre os dois quebra essa
+ * corrente: não sendo item nem container flex, ele cresce com o conteúdo e o
+ * corpo nunca recebe altura limitada — aí não há barra de rolagem e o fim do
+ * formulário fica inalcançável. Estas classes mantêm a corrente inteira.
+ */
+export function DialogForm({ className, ...props }: React.FormHTMLAttributes<HTMLFormElement>) {
+  return <form className={cn('flex min-h-0 flex-1 flex-col', className)} {...props} />;
+}
+
 export function DialogBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('flex-1 overflow-y-auto px-5 py-5 sm:px-6', className)} {...props} />;
 }

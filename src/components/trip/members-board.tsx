@@ -12,7 +12,7 @@ import { Field } from '@/components/ui/field';
 import { Alert } from '@/components/ui/alert';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { ResourceDialog } from '@/components/shared/resource-dialog';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from '@/components/ui/dropdown';
@@ -368,7 +368,7 @@ function InviteForm({ tripId, onDone }: { tripId: string; onDone: () => void }) 
   }
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-4">
         <FormError state={state} />
         <Field label="E-mail" error={fieldError(state, 'email')} required>
@@ -390,6 +390,6 @@ function InviteForm({ tripId, onDone }: { tripId: string; onDone: () => void }) 
         </Button>
         <SubmitButton>Gerar convite</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }

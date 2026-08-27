@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { saveAccommodationAction } from '@/server/actions/accommodations';
 import { Field, FieldGroup } from '@/components/ui/field';
 import { Input, Select, Textarea } from '@/components/ui/input';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { CurrencySelect, MoneyInput, PaymentStatusSelect, TimezoneSelect } from '@/components/shared/form-fields';
@@ -62,7 +62,7 @@ export function AccommodationForm({
   }, [state, accommodation, onDone, router]);
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-7">
         <FormError state={state} />
 
@@ -272,6 +272,6 @@ export function AccommodationForm({
         </Button>
         <SubmitButton>{accommodation ? 'Salvar alterações' : 'Adicionar hospedagem'}</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { saveItineraryItemAction } from '@/server/actions/itinerary';
 import { Field, FieldGroup } from '@/components/ui/field';
 import { Input, Select, Textarea } from '@/components/ui/input';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { CurrencySelect, MoneyInput, TimezoneSelect } from '@/components/shared/form-fields';
@@ -56,7 +56,7 @@ export function ItineraryForm({
   }, [state, item, onDone, router]);
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-7">
         <FormError state={state} />
 
@@ -223,6 +223,6 @@ export function ItineraryForm({
         </Button>
         <SubmitButton>{item ? 'Salvar alterações' : 'Adicionar ao roteiro'}</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }

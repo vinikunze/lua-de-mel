@@ -14,7 +14,7 @@ import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from '@/comp
 import { EmptyState } from '@/components/ui/empty-state';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { ResourceDialog, EditDialog } from '@/components/shared/resource-dialog';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { PlaceAutocomplete, type PlaceValue } from '@/components/maps/place-autocomplete';
@@ -349,7 +349,7 @@ function PlaceForm({ tripId, place, onDone }: { tripId: string; place?: PlaceRow
   }, [state, place, onDone, router]);
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-5">
         <FormError state={state} />
 
@@ -416,6 +416,6 @@ function PlaceForm({ tripId, place, onDone }: { tripId: string; place?: PlaceRow
         </Button>
         <SubmitButton>{place ? 'Salvar alterações' : 'Salvar local'}</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }

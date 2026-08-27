@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { saveCarRentalAction } from '@/server/actions/cars';
 import { Field, FieldGroup } from '@/components/ui/field';
 import { Input, Textarea } from '@/components/ui/input';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { CurrencySelect, MoneyInput, PaymentStatusSelect, TimezoneSelect } from '@/components/shared/form-fields';
@@ -45,7 +45,7 @@ export function CarForm({
   }, [state, car, onDone, router]);
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-7">
         <FormError state={state} />
 
@@ -196,6 +196,6 @@ export function CarForm({
         </Button>
         <SubmitButton>{car ? 'Salvar alterações' : 'Adicionar carro'}</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }
