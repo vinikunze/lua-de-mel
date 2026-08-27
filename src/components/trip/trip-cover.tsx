@@ -4,13 +4,18 @@ import { cn } from '@/lib/utils';
  * Capa da viagem. Sem imagem, gera um gradiente estável a partir do nome —
  * cada viagem fica visualmente reconhecível sem precisar de upload.
  */
+/**
+ * Tons profundos da mesma família da marca. O texto branco por cima vem com
+ * um véu escuro, então todas começam escuras e abrem para um tom claro.
+ * A ordem importa: o índice é sorteado pelo nome da viagem.
+ */
 const PALETTES = [
-  'from-[#1d3557] via-[#457b9d] to-[#a8dadc]',
-  'from-[#2d3142] via-[#4f5d75] to-[#bfc0c0]',
-  'from-[#14532d] via-[#15803d] to-[#86efac]',
-  'from-[#4a1d3f] via-[#8c3061] to-[#e0a5c4]',
-  'from-[#7c2d12] via-[#c2410c] to-[#fdba74]',
-  'from-[#0c4a6e] via-[#0e7490] to-[#67e8f9]',
+  'from-[#0d1b2a] via-[#2f4a68] to-[#9db8d4]', // noite azul
+  'from-[#1d1424] via-[#4a2c56] to-[#c4a5f0]', // ameixa
+  'from-[#1a1408] via-[#6f5320] to-[#d9b169]', // dourado
+  'from-[#2a0f14] via-[#6d2532] to-[#d99aa4]', // vinho
+  'from-[#2b1409] via-[#7a3d1c] to-[#e0a878]', // terracota
+  'from-[#0f1f1a] via-[#2f5d4c] to-[#9ecfb8]', // mata ao entardecer
 ];
 
 function paletteFor(seed: string): string {

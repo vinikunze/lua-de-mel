@@ -19,20 +19,23 @@ export interface MapMarker {
   externalUrl?: string | null;
 }
 
+// Os pinos do mapa são desenhados pelo Google, fora do alcance do CSS, então
+// aqui os valores são literais. Espelham as cores de categoria do globals.css
+// (as do tema claro, já que o mapa é claro).
 const CATEGORY_COLORS: Record<string, string> = {
-  accommodation: '#7c3aed',
-  restaurant: '#c2410c',
-  attraction: '#0f766e',
-  airport: '#2563eb',
-  parking: '#64748b',
-  car_rental: '#ea580c',
-  shopping: '#be185d',
-  event: '#4f46e5',
-  transport: '#0891b2',
-  flight: '#2563eb',
-  car: '#ea580c',
-  tour: '#0891b2',
-  other: '#64748b',
+  accommodation: '#7a5197',
+  restaurant: '#a8452f',
+  attraction: '#2f7d6a',
+  airport: '#2f6d8f',
+  parking: '#6e6558',
+  car_rental: '#b4652a',
+  shopping: '#a13f6b',
+  event: '#55529c',
+  transport: '#2a7d92',
+  flight: '#2f6d8f',
+  car: '#b4652a',
+  tour: '#2a7d92',
+  other: '#6e6558',
 };
 
 function colorFor(category: string): string {
