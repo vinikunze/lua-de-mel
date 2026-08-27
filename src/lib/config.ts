@@ -8,8 +8,8 @@ export const APP = {
   tagline: 'A central da sua viagem, do planejamento à volta para casa.',
   description:
     'Organize voos, hospedagens, carro, roteiro, mapas, gastos e documentos de todas as suas viagens em um só lugar.',
-  themeColor: '#0f172a',
-  backgroundColor: '#ffffff',
+  themeColor: '#0b0a0f',
+  backgroundColor: '#0b0a0f',
   locale: 'pt-BR',
   defaultCurrency: 'BRL',
   defaultTimezone: 'America/Sao_Paulo',
