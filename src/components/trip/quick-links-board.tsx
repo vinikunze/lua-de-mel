@@ -11,7 +11,7 @@ import { Field } from '@/components/ui/field';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { ResourceDialog } from '@/components/shared/resource-dialog';
-import { DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { DialogBody, DialogFooter, DialogForm } from '@/components/ui/dialog';
 import { SubmitButton } from '@/components/shared/submit-button';
 import { FormError, fieldError } from '@/components/shared/form-error';
 import { toast } from '@/components/ui/toaster';
@@ -137,7 +137,7 @@ function QuickLinkForm({ tripId, onDone }: { tripId: string; onDone: () => void 
   }, [state, onDone, router]);
 
   return (
-    <form action={formAction} noValidate>
+    <DialogForm action={formAction} noValidate>
       <DialogBody className="space-y-4">
         <FormError state={state} />
         <Field label="Nome" error={fieldError(state, 'label')} required>
@@ -162,6 +162,6 @@ function QuickLinkForm({ tripId, onDone }: { tripId: string; onDone: () => void 
         </Button>
         <SubmitButton>Salvar link</SubmitButton>
       </DialogFooter>
-    </form>
+    </DialogForm>
   );
 }
