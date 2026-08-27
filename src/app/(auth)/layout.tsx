@@ -13,13 +13,18 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       {/* Coluna de apresentação — só no desktop, para não roubar espaço no celular */}
-      <aside className="relative hidden flex-col justify-between bg-primary p-12 text-primary-foreground lg:flex">
-        <Link href="/" className="inline-flex">
-          <Logo size="lg" className="[&_rect]:fill-primary-foreground [&_path]:fill-primary [&_circle]:fill-primary-foreground [&_span]:text-primary-foreground" />
+      <aside className="relative hidden flex-col justify-between overflow-hidden bg-showcase p-12 text-showcase-foreground lg:flex">
+        {/* Brilho dourado discreto, para o painel não ser um bloco chapado */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_-10%,rgba(217,177,105,0.16),transparent_55%),radial-gradient(circle_at_88%_110%,rgba(217,177,105,0.10),transparent_50%)]"
+        />
+        <Link href="/" className="relative inline-flex">
+          <Logo size="lg" className="[&_rect]:fill-accent [&_path]:fill-showcase [&_circle]:fill-accent [&_span]:text-showcase-foreground" />
         </Link>
 
-        <div className="max-w-md">
-          <h2 className="text-[28px] font-semibold leading-tight tracking-tight text-balance">
+        <div className="relative max-w-md">
+          <h2 className="font-display text-[34px] leading-[1.15] text-balance">
             Tudo sobre a sua viagem em um só lugar.
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed opacity-70">
@@ -28,14 +33,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <ul className="mt-8 space-y-3">
             {HIGHLIGHTS.map((item) => (
               <li key={item} className="flex gap-3 text-[13.5px] leading-relaxed opacity-80">
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-current" aria-hidden />
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden />
                 {item}
               </li>
             ))}
           </ul>
         </div>
 
-        <p className="text-xs opacity-50">
+        <p className="relative text-xs opacity-50">
           {APP.name} — seus dados ficam protegidos por autenticação e políticas de acesso no banco.
         </p>
       </aside>

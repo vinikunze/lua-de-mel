@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Cormorant_Garamond, Inter } from 'next/font/google';
 import { APP } from '@/lib/config';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ServiceWorkerRegistrar } from '@/components/providers/service-worker';
@@ -9,6 +9,14 @@ import './globals.css';
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+// Serif de display dos títulos — mesma família do painel do casamento.
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
   display: 'swap',
 });
 
@@ -42,14 +50,14 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fbfaf9' },
-    { media: '(prefers-color-scheme: dark)', color: '#0c0c0e' },
+    { media: '(prefers-color-scheme: light)', color: '#faf7f1' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0a0f' },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning className={inter.variable}>
+    <html lang="pt-BR" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable}`}>
       <body className="min-h-dvh antialiased">
         <ThemeProvider>
           <a
